@@ -1,41 +1,89 @@
 #include <iostream>
-#include <string>
-#include <array>
+#include <vector>
 using namespace std;
 
-class CVector{
+class Student{
+    private:
+        int rollno, age;
+        string name;
     public:
-        int x, y;
-        CVector () {};
-        CVector (int, int);
-        CVector operator + (CVector);
+        Student(int stdRollNo, int Age, string stdName){
+            rollno = stdRollNo;
+            age = Age;
+            name = stdName;
+        }
+        void setRollno(int stdRollno){
+            rollno = stdRollno;
+        }
+        int getRollno(){
+            return rollno;
+        }
+        void setName(string StdName){
+            name = StdName;
+        }
+        string getName(){
+            return name;
+        }
+        void setAge(int Stdage){
+            age = Stdage;
+        }
+        int getAge(){
+            return age;
+        }
 };
-CVector::CVector(int a, int b){
-    x = a;
-    y = b;
+void addNewStudent(vector<Student> &student){
+    int rollNo, age;
+    string name;
+    cin>>age;
+    cin>>name;
+    enter_rollNo:
+    cin>>rollNo;
+    for (int i=0; i<student.size(); i++){
+        if (student[i].getRollno() == rollNo){
+            cout << "fucked up\n";
+            goto enter_rollNo;
+        }
+    }
+    Student new_student(rollNo, age, name);
+    student.push_back(new_student);
 }
-CVector CVector::operator + (CVector cvector){
-    CVector temp;
-    temp.x = x + cvector.x;
-    temp.y = y + cvector.y;
-    return (temp);
-}
-
-void print_array(int args [3], int length){
-    for (int i=0; i<length; i++){
-        cout << args[i] << endl;
+void dispStudent(vector<Student> &students){
+    for (int i=0; i<students.size(); i++){
+        cout << students[i].getRollno() << students[i].getName() << students[i].getAge() << '\n';
     }
 }
-
-int main() {
-    int ages [] = {1, 3, 5};
-    print_array(ages, 3);
-    cout << *&ages[0] << endl;
-
-    CVector a (1, 2);
-    CVector b (3, 4);
-    CVector c;
-    c = a + b;
-
+void deleteStudent(vector<Student> &students){
+    int rollNo;
+    cin >> rollNo;
+    for (int i=0; i<students.size(); i++){
+        if (students[i].getRollno()==rollNo){
+            students.erase((students.begin()+i));
+        }
+    }
+}
+int main(){
+    vector<Student> students;
+    students.push_back(Student(1, 20, "ali"));
+    int op;
+    while(1){
+        cin >> op;
+        switch (op)
+        {
+        case 1:
+            cout << "add student Age, Name, Id\n";
+            addNewStudent(students);
+            break;
+        case 2:
+            cout << "delete student Id\n";
+            deleteStudent(students);
+            break;
+        
+        default:
+            dispStudent(students);
+            break;
+        }
+        
+        
+    }
     return 0;
 }
